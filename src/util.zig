@@ -37,12 +37,12 @@ pub const Matrix = struct {
         return index;
     }
 
-    fn get(self: Matrix, i: usize, j: usize) !u64 {
+    pub fn get(self: Matrix, i: usize, j: usize) !u64 {
         const index = try self.toIndex(i, j);
         return self.data[index];
     }
 
-    fn set(self: Matrix, i: usize, j: usize, v: u64) !void {
+    pub fn set(self: Matrix, i: usize, j: usize, v: u64) !void {
         const index = try self.toIndex(i, j);
         self.data[index] = v;
     }
