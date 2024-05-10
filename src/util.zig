@@ -48,6 +48,20 @@ pub const Matrix = struct {
     }
 };
 
+pub fn print_mat(mat: Matrix) !void {
+    const m = mat.m;
+    const n = mat.n;
+
+    for (0..m) |i| {
+        std.debug.print("|  ", .{});
+        for (0..n) |j| {
+            const v = try mat.get(i, j);
+            std.debug.print("{d},  ", .{v});
+        }
+        std.debug.print("|\n", .{});
+    }
+}
+
 test "it doesn't leak memory" {
     const mat = try Matrix.init(std.testing.allocator, 2, 2);
     defer mat.deinit();
