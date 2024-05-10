@@ -2,65 +2,37 @@ const std = @import("std");
 const util = @import("./util.zig");
 const Matrix = util.Matrix;
 
-// pub fn levenshtein(alloc: std.mem.Allocator, a: []const u8, b: []const u8) !u64 {
-//     const s = lev(a, b);
-//     return s;
-// const m = a.len;
-// const n = b.len;
-//
-// if (n == 0) {
-//     return m;
-// }
-//
-// if (m == 0) {
-//     return n;
-// }
-//
-// var s: u64 = 0;
-// var k: usize = 0;
-//
-// while (a[k] == b[k]) {
-//     k += 1;
-// }
-//
-// s += 1;
-//
-// const mat = Matrix.init(alloc, m, n);
-// _ = mat;
-// }
-
-fn lev(a: []const u8, b: []const u8) u64 {
+pub fn lev(alloc: std.mem.Allocator, a: []const u8, b: []const u8) !u64 {
     const m = a.len;
     const n = b.len;
 
-    if (n == 0) {
-        return m;
+    const mat = try Matrix.init(alloc, m + 1, n + 1);
+    defer mat.deinit();
+
+    for (0..m + 1) |k| {
+        try mat.set(k, 0, k);
     }
 
-    if (m == 0) {
-        return n;
+    for (0..n + 1) |k| {
+        try mat.set(0, k, k);
     }
 
-    if (a[0] == b[0]) {
-        return lev(tail(a), tail(b));
+    for (1..mat.n) |j| {
+        for (1..mat.m) |i| {
+            var cost: u64 = 1;
+            if (a[i - 1] == b[j - 1]) {
+                cost = 0;
+            }
+
+            try mat.set(i, j, @min(
+                try mat.get(i - 1, j) + 1,
+                try mat.get(i, j - 1) + 1,
+                try mat.get(i - 1, j - 1) + cost,
+            ));
+        }
     }
 
-    const branch_one = lev(tail(a), b);
-    if (branch_one == 0) {
-        return 1;
-    }
-
-    const branch_two = lev(a, tail(b));
-    if (branch_two == 0) {
-        return 1;
-    }
-
-    const branch_three = lev(tail(a), tail(b));
-    if (branch_three == 0) {
-        return 1;
-    }
-
-    return 1 + @min(branch_three, @min(branch_one, branch_two));
+    return mat.get(m, n);
 }
 
 fn head(s: []const u8) []const u8 {
@@ -103,7 +75,8 @@ test "it should calculate correctly" {
     const a = "asdffgghabvc";
     const b = "asdafggaaccc";
 
-    const v = lev(a, b);
-    std.debug.print("v: {d}", .{v});
-    // try std.testing.expect(v == 1);
+    const want: u64 = 4;
+    const v = try lev(std.testing.allocator, a, b);
+
+    try std.testing.expect(v == want);
 }
