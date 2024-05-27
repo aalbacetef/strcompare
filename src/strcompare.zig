@@ -12,7 +12,7 @@ pub const damerau = levenshtein_metrics.damerau;
 
 // export helper functions and Metric enum
 pub const Metrics = _compare.Metrics;
-pub const compare = _compare.compare;
+pub const similarity = _compare.similarity;
 pub const distance = _compare.distance;
 
 test {

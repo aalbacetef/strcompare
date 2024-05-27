@@ -4,7 +4,7 @@ const levenshtein = @import("./levenshtein.zig");
 
 pub const Metrics = enum { Levenshtein, Damerau, Hamming };
 
-pub fn compare(alloc: std.mem.Allocator, metric: Metrics, a: []const u8, b: []const u8) !f64 {
+pub fn similarity(alloc: std.mem.Allocator, metric: Metrics, a: []const u8, b: []const u8) !f64 {
     const edit_distance = try distance(alloc, metric, a, b);
     const m = a.len;
     const n = b.len;
@@ -39,8 +39,8 @@ test "it should correctly compare strings that differ by 1 character" {
     const a = "asdalt";
     const b = "asdalg";
 
-    const lev = try compare(std.testing.allocator, Metrics.Levenshtein, a, b);
-    const dam = try compare(std.testing.allocator, Metrics.Damerau, a, b);
+    const lev = try similarity(std.testing.allocator, Metrics.Levenshtein, a, b);
+    const dam = try similarity(std.testing.allocator, Metrics.Damerau, a, b);
 
     const tol = 1e-6;
     const want = 1.0 - (1.0 / 6.0);
@@ -53,8 +53,8 @@ test "it should return 0.0 when comparing entirely different strings" {
     const a = "bbbbbbbb";
     const b = "asdalg";
 
-    const lev = try compare(std.testing.allocator, Metrics.Levenshtein, a, b);
-    const dam = try compare(std.testing.allocator, Metrics.Damerau, a, b);
+    const lev = try similarity(std.testing.allocator, Metrics.Levenshtein, a, b);
+    const dam = try similarity(std.testing.allocator, Metrics.Damerau, a, b);
 
     const tol = 1e-6;
     const want = 0.0;
@@ -67,8 +67,8 @@ test "it should return 1.0 when comparing identical different strings" {
     const a = "equal";
     const b = "equal";
 
-    const lev = try compare(std.testing.allocator, Metrics.Levenshtein, a, b);
-    const dam = try compare(std.testing.allocator, Metrics.Damerau, a, b);
+    const lev = try similarity(std.testing.allocator, Metrics.Levenshtein, a, b);
+    const dam = try similarity(std.testing.allocator, Metrics.Damerau, a, b);
 
     const tol = 1e-6;
     const want = 1.0;
