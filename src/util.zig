@@ -28,8 +28,9 @@ pub const Matrix = struct {
     }
 
     fn toIndex(self: Matrix, i: usize, j: usize) !u64 {
-        const index = i + (j * self.n);
+        const index = i + (j * self.m);
         const max_indx = self.m * self.n;
+
         if (index >= max_indx) {
             return MatrixError.IndexOutOfBounds;
         }
@@ -76,15 +77,20 @@ test "it can get an element" {
 }
 
 test "it can set an element" {
-    const mat = try Matrix.init(std.testing.allocator, 2, 2);
+    try testSet(std.testing.allocator, 2, 2, 200, 1, 1);
+    try testSet(std.testing.allocator, 3, 2, 200, 1, 1);
+    try testSet(std.testing.allocator, 3, 4, 200, 2, 3);
+}
+
+fn testSet(alloc: std.mem.Allocator, m: usize, n: usize, want: u64, i: usize, j: usize) !void {
+    const mat = try Matrix.init(alloc, m, n);
     defer mat.deinit();
 
-    var v = try mat.get(1, 1);
+    var v = try mat.get(i, j);
     try std.testing.expect(v == 0);
 
-    const want = 200;
-    try mat.set(1, 1, want);
-    v = try mat.get(1, 1);
+    try mat.set(i, j, want);
+    v = try mat.get(i, j);
 
     try std.testing.expect(v == want);
 }
