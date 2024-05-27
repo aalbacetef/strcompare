@@ -11,7 +11,7 @@
 
 The library provides two convenience functions: `similarity` and `distance`.
 
-Both functions accept a `Metric` argument, one of:
+Both functions accept a `Metrics` argument, one of:
 
 ```zig
 pub const Metrics = enum { 
