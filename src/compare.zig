@@ -22,11 +22,16 @@ pub fn distance(alloc: std.mem.Allocator, metric: Metrics, a: []const u8, b: []c
     };
 }
 
-test "it should return 1.0 for equal strings" {
+test "it should return 1.0 for strings that differ by 1 character" {
     const a = "asd";
     const b = "asda";
 
+    const tol = 1e-6;
     const want = 1.0;
-    const v = try compare(std.testing.allocator, Metrics.Levenshtein, a, b);
-    try std.testing.expect(v != want);
+
+    const lev = try compare(std.testing.allocator, Metrics.Levenshtein, a, b);
+    try std.testing.expectApproxEqRel(want, lev, tol);
+
+    const dam = try compare(std.testing.allocator, Metrics.Damerau, a, b);
+    try std.testing.expectApproxEqRel(want, dam, tol);
 }
