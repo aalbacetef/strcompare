@@ -26,7 +26,7 @@ pub const Metrics = enum {
 
 #### distance 
 
-`distance` will return the edit distance, a `u64`, the value of which depends on the metric used.
+`distance` will return the edit distance, a `u64`.
 
 It accepts the following arguments:
  - alloc: an `std.mem.Allocator`
