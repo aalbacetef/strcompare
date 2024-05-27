@@ -1,7 +1,7 @@
-# strcompare
-
-
 ![CI status](https://github.com/aalbacetef/strcompare/actions/workflows/ci.yml/badge.svg)
+
+
+# strcompare
 
 
 `strcompare` is a zig library implementing 3 of the most common string comparison algorithms:
