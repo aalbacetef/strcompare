@@ -1,3 +1,6 @@
+![CI status](https://github.com/aalbacetef/strcompare/actions/workflows/ci.yml/badge.svg)
+
+
 # strcompare
 
 
@@ -23,7 +26,7 @@ pub const Metrics = enum {
 
 #### distance 
 
-`distance` will return the edit distance, a `u64`, the value of which depends on the metric used.
+`distance` will return the edit distance, a `u64`.
 
 It accepts the following arguments:
  - alloc: an `std.mem.Allocator`
@@ -68,4 +71,5 @@ std.debug.print("similarity: {d:.2%}\n", .{d});
 // similarity: 0.57%
 //
 ```
+
 
