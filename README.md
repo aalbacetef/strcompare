@@ -83,9 +83,40 @@ zig fetch --save ./path/to/strcompare
 then add the following to your `build.zig`
 
 ```zig
-
-
     const pkg = b.dependency("strcompare", .{});
     exe.root_module.addImport("strcompare", pkg.module("strcompare"));
+
+```
+
+Do the same for your tests:
+
+```zig
+
+    const exe_unit_tests = b.addTest(.{
+        .root_source_file = b.path("src/main.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+
+    exe_unit_tests.root_module.addImport("strcompare", pkg.module("strcompare"));
+
+```
+
+You should now be able to import the module with:
+
+```zig
+const strcompare = @import("strcompare");
+const Metrics = strcompare.Metrics;
+const distance = strcompare.distance;
+const similarity = strcompare.similarity;
+
+fn dist() !void {
+    const a = "a";
+    const b = "bb";
+    const alloc = std.heap.page_allocator;
+
+    const d = try distance(alloc, Metrics.Levenshtein, a, b);
+    std.debug.print("distance: {d}\n", .{d});
+}
 
 ```
