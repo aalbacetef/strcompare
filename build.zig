@@ -4,6 +4,12 @@ pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
+    _ = b.addModule("strcompare", .{
+        .root_source_file = .{
+            .path = "./src/strcompare.zig",
+        },
+    });
+
     const lib = b.addStaticLibrary(.{
         .name = "strcompare",
         .root_source_file = .{ .path = "./src/strcompare.zig" },
