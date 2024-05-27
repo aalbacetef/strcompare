@@ -9,11 +9,11 @@ pub fn lev(alloc: std.mem.Allocator, a: []const u8, b: []const u8) !u64 {
     const mat = try Matrix.init(alloc, m + 1, n + 1);
     defer mat.deinit();
 
-    for (0..m + 1) |k| {
+    for (0..(m + 1)) |k| {
         try mat.set(k, 0, k);
     }
 
-    for (0..n + 1) |k| {
+    for (0..(n + 1)) |k| {
         try mat.set(0, k, k);
     }
 
@@ -64,10 +64,10 @@ pub fn damerau(alloc: std.mem.Allocator, a: []const u8, b: []const u8) !u64 {
             ));
 
             const larger_than_1 = (i > 1) and (j > 1);
-            const in_bounds = (i < m) and (j < n);
-            const valid_index = larger_than_1 and in_bounds;
+            const cmp_a = larger_than_1 and a[i - 1] == b[j - 2];
+            const cmp = cmp_a and a[i - 2] == b[j - 1];
 
-            if (valid_index and (a[i] == b[j - 1]) and (a[i - 1] == b[j])) {
+            if (cmp) {
                 try mat.set(i, j, @min(
                     try mat.get(i, j),
                     try mat.get(i - 2, j - 2) + 1,
