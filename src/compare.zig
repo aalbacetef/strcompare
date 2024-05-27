@@ -48,3 +48,31 @@ test "it should correctly compare strings that differ by 1 character" {
     try std.testing.expectApproxEqRel(want, lev, tol);
     try std.testing.expectApproxEqRel(want, dam, tol);
 }
+
+test "it should return 0.0 when comparing entirely different strings" {
+    const a = "bbbbbbbb";
+    const b = "asdalg";
+
+    const lev = try compare(std.testing.allocator, Metrics.Levenshtein, a, b);
+    const dam = try compare(std.testing.allocator, Metrics.Damerau, a, b);
+
+    const tol = 1e-6;
+    const want = 0.0;
+
+    try std.testing.expectApproxEqRel(want, lev, tol);
+    try std.testing.expectApproxEqRel(want, dam, tol);
+}
+
+test "it should return 1.0 when comparing identical different strings" {
+    const a = "equal";
+    const b = "equal";
+
+    const lev = try compare(std.testing.allocator, Metrics.Levenshtein, a, b);
+    const dam = try compare(std.testing.allocator, Metrics.Damerau, a, b);
+
+    const tol = 1e-6;
+    const want = 1.0;
+
+    try std.testing.expectApproxEqRel(want, lev, tol);
+    try std.testing.expectApproxEqRel(want, dam, tol);
+}
