@@ -23,7 +23,9 @@ pub const Metrics = enum {
 
 #### distance 
 
-`distance` accepts the following arguments:
+`distance` will return the edit distance, a `u64`, the value of which depends on the metric used.
+
+It accepts the following arguments:
  - alloc: an `std.mem.Allocator`
  - metric: one of the `Metrics`
  - a, b: strings to compare
@@ -46,6 +48,11 @@ std.debug.print("distance: {d}\n", .{d});
 
 `similarity` returns a weighted distance, that is, an `f64` from `0.0` to `1.0`. 
 It will return `0.0` if the strings differ completely and `1.0` if they are identical.
+
+It accepts the following arguments:
+ - alloc: an `std.mem.Allocator`
+ - metric: one of the `Metrics`
+ - a, b: strings to compare
 
 
 Example:
