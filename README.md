@@ -72,4 +72,20 @@ std.debug.print("similarity: {d:.2%}\n", .{d});
 //
 ```
 
+## Installing
 
+After acquiring the repo's code, run:
+
+```bash
+zig fetch --save ./path/to/strcompare 
+```
+
+then add the following to your `build.zig`
+
+```zig
+
+
+    const pkg = b.dependency("strcompare", .{});
+    exe.root_module.addImport("strcompare", pkg.module("strcompare"));
+
+```
