@@ -66,9 +66,9 @@ const b = "sitting";
 
 const d = similarity(alloc, Metrics.Levenshtein, a, b);
 
-std.debug.print("similarity: {d:.2%}\n", .{d}); 
+std.debug.print("similarity: {d:.0}%\n", .{d*100.0}); 
 // 
-// similarity: 0.57%
+// similarity: 57%
 //
 ```
 
