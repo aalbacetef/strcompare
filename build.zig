@@ -5,14 +5,12 @@ pub fn build(b: *std.Build) void {
     const optimize = b.standardOptimizeOption(.{});
 
     _ = b.addModule("strcompare", .{
-        .root_source_file = .{
-            .path = "./src/strcompare.zig",
-        },
+        .root_source_file = b.path("./src/strcompare.zig"),
     });
 
     const lib = b.addStaticLibrary(.{
         .name = "strcompare",
-        .root_source_file = .{ .path = "./src/strcompare.zig" },
+        .root_source_file = b.path("./src/strcompare.zig"),
         .target = target,
         .optimize = optimize,
     });
@@ -21,7 +19,7 @@ pub fn build(b: *std.Build) void {
 
     const test_step = b.step("test", "Run library tests");
     const t = b.addTest(.{
-        .root_source_file = .{ .path = "./src/strcompare.zig" },
+        .root_source_file = b.path("./src/strcompare.zig"),
         .target = target,
         .optimize = optimize,
     });
