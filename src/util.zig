@@ -27,7 +27,7 @@ pub const Matrix = struct {
         self.allocator.free(self.data);
     }
 
-    fn toIndex(self: Matrix, i: usize, j: usize) !u64 {
+    fn toIndex(self: Matrix, i: usize, j: usize) !usize {
         const index = i + (j * self.m);
         const max_indx = self.m * self.n;
 
